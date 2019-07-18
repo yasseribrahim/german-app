@@ -5,4 +5,24 @@
   <color name="primary_darker">#FF201E1F</color>
   <color name="accent">#FFFAC023</color>
   <color name="white">#FFFFFFFF</color>
+
+  <color name="refreshColor4">#019DCD</color>
+  <color name="refreshColor3">#8CAD4A</color>
+  <color name="refreshColor2">#F47224</color>
+  <color name="refreshColor1">#94257F</color>
+
+  <color name="gray">#bfbfbf</color>
+  <color name="gray_dark">#808080</color>
+  <color name="red">#d92225</color>
+  <color name="green">#4ab651</color>
+  <color name="green_light">#78be45</color>
+  <color name="green_dark">#64993e</color>
+  <color name="orange">#f9a827</color>
+  <color name="black">#000000</color>
+  <color name="lightGray">#e1e1e1</color>
+  <color name="lightGray2">#f2f1f1</color>
+  <color name="yellow">#fab326</color>
+
+  <color name="text_color">@color/accent</color>
+  <color name="deemed_color">#8A9091</color>
 </resources>

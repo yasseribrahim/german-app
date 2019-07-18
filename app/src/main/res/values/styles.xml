@@ -15,7 +15,8 @@
         <item name="colorControlHighlight">@color/white</item>
         <item name="android:textColorHint">@color/accent</item>
         <item name="colorButtonNormal">@color/accent</item>
-        <item name="android:colorButtonNormal">@color/accent</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:editTextColor">@color/accent</item>
     </style>
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
@@ -23,5 +24,14 @@
         <item name="android:textColorPrimary">@color/accent</item>
         <item name="android:background">@color/primary</item>
     </style>
+
+    <style name="AppTheme.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Dark.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Dark.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -1,6 +1,39 @@
 <resources>
-    <string name="app_name">Material Login Example</string>
+    <string name="app_name">German-App</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">@string/app_name</string>
+    <string name="nav_header_subtitle">demo.user@german-app.com</string>
+    <string name="nav_header_desc">@string/app_name</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <!-- Videos messages -->
+    <string name="title_videos">Videos</string>
+    <string name="str_search_videos">Search</string>
+    <string name="str_empty_videos">Sorry, There are no Videos</string>
+    <string name="str_not_matched_videos">Sorry, There are no Videos matched to filter</string>
+
+    <string name="copy_right">Copyright Mazeedit.com &#169;</string>
+    <string name="message_general_error">Error happened! please, try again</string>
+    <string name="message_error_connection">Please, check your connection!</string>
+    <string name="message_edit_profile_complete">Edit Profile Complete Success</string>
+    <string name="message_exit">Please click BACK again to exit</string>
+    <string name="message_profile_image_max_size">Image max size is 2 MB!</string>
+    <string name="error_invalid_username_or_password">The username or the password is incorrect, please try again</string>
+    <string name="error_no_authorization">Unauthorized: Access is denied</string>
+    <string name="error_service_unavailable">Service is unavailable now , please try again later</string>
+    <string name="str_load_more">More...</string>
+    <string name="label_retry">Retry</string>
+    <string name="dialog_msg_loading">Loading...</string>
 </resources>

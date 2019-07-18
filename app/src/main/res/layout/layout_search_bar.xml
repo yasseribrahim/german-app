@@ -1,0 +1,51 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_search"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimens_5dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimens_2dp">
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimens_2dp"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dimens_2dp"
+            app:srcCompat="@drawable/ic_action_search" />
+
+        <ImageView
+            android:id="@+id/image_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/image_search"
+            android:layout_alignTop="@+id/image_search"
+            android:layout_alignEnd="@+id/image_search"
+            android:layout_alignBottom="@+id/image_search"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_action_clear" />
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/image_search"
+            android:background="@color/white"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="@string/str_search_videos"
+            app:searchIcon="@null" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
