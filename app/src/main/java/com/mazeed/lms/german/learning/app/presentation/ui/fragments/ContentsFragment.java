@@ -226,6 +226,7 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
         this.contents.clear();
         this.contents.addAll(contents);
         applyFilter("");
+        searchView.setQuery("", false);
         if (!contents.isEmpty()) {
             emptyVideos.setVisibility(View.GONE);
         } else {
