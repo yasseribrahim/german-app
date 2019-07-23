@@ -42,8 +42,6 @@ public class LoginActivity extends BaseActivity implements UserCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        emailText.setText("User1");
-        passwordText.setText("User1");
         presenter = new UserPresenterImp(this);
     }
 
