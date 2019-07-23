@@ -6,7 +6,7 @@ import com.mazeed.lms.german.learning.app.GermanApplication;
 import com.mazeed.lms.german.learning.app.domain.controller.Controller;
 import com.mazeed.lms.german.learning.app.domain.interactors.user.UserInteractor;
 import com.mazeed.lms.german.learning.app.domain.interactors.user.UserInteractorImp;
-import com.mazeed.lms.german.learning.app.domain.models.user.AuthorizationBody;
+import com.mazeed.lms.german.learning.app.domain.models.user.User;
 import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.UserCallback;
 
 import javax.inject.Inject;
@@ -60,23 +60,18 @@ public class UserPresenterImp implements UserPresenter, UserInteractor.UserCallb
     }
 
     @Override
-    public void login(AuthorizationBody body) {
-        interactor.getToken(body);
+    public void login(User user) {
+        interactor.login(user);
     }
 
     @Override
-    public void getUserInfo() {
-        interactor.getUserInfo();
+    public void register(User user) {
+        interactor.register(user);
     }
 
     @Override
     public void logout() {
         interactor.logout();
-    }
-
-    @Override
-    public void setDeviceToken(String token) {
-        interactor.setDeviceToken(token);
     }
 
     @Override
@@ -108,9 +103,9 @@ public class UserPresenterImp implements UserPresenter, UserInteractor.UserCallb
     }
 
     @Override
-    public void onGetUserInfoComplete() {
+    public void onRegisterComplete() {
         if (view != null) {
-            view.onGetUserInfoComplete();
+            view.onRegisterComplete();
         }
     }
 
@@ -122,23 +117,9 @@ public class UserPresenterImp implements UserPresenter, UserInteractor.UserCallb
     }
 
     @Override
-    public void onSetDeviceTokenComplete() {
+    public void onLoginComplete() {
         if (view != null) {
-            view.onSetDeviceTokenComplete();
-        }
-    }
-
-    @Override
-    public void onGetTokenComplete() {
-        if (view != null) {
-            view.onGetTokenComplete();
-        }
-    }
-
-    @Override
-    public void ontUserNotSupportCallback() {
-        if (view != null) {
-            view.ontUserNotSupportCallback();
+            view.onLoginComplete();
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.mazeed.lms.german.learning.app.presentation.presenters.user;
 
-import com.mazeed.lms.german.learning.app.domain.models.user.AuthorizationBody;
+import com.mazeed.lms.german.learning.app.domain.models.user.User;
 import com.mazeed.lms.german.learning.app.presentation.presenters.MainPresenter;
 
 /**
@@ -8,11 +8,9 @@ import com.mazeed.lms.german.learning.app.presentation.presenters.MainPresenter;
  */
 
 public interface UserPresenter extends MainPresenter {
-    void login(AuthorizationBody body);
+    void login(User user);
 
-    void getUserInfo();
+    void register(User user);
 
     void logout();
-
-    void setDeviceToken(String token);
 }

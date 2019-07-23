@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnItemBottomSheetClickCallback;
 import com.mazeed.lms.german.learning.app.presentation.ui.adapters.BottomSheetAdapter;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnItemBottomSheetClickCallback;
 import com.mazeed.lms.german.learning.app.presentation.ui.custom.CustomDividerItemDecoration;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.Constants;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.models.BottomSheetItem;
@@ -37,11 +37,13 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment i
     private BottomSheetAdapter adapter;
     private List<BottomSheetItem> items;
     private OnItemBottomSheetClickCallback callback;
+    private int selected;
 
-    public static CustomBottomSheetDialogFragment newInstance(String title, ArrayList<BottomSheetItem> items) {
+    public static CustomBottomSheetDialogFragment newInstance(String title, ArrayList<BottomSheetItem> items, int selected) {
         CustomBottomSheetDialogFragment fragment = new CustomBottomSheetDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.KEY_TITLE, title);
+        bundle.putInt(Constants.KEY_SELECTED, selected);
         bundle.putParcelableArrayList(Constants.KEY_BOTTOM_SHEET_LIST, items);
         fragment.setArguments(bundle);
         return fragment;
@@ -54,10 +56,11 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment i
         ButterKnife.bind(this, view);
 
         items = getArguments().getParcelableArrayList(Constants.KEY_BOTTOM_SHEET_LIST);
+        selected = getArguments().getInt(Constants.KEY_SELECTED, -1);
         String title = getArguments().getString(Constants.KEY_TITLE);
         this.title.setText(title);
 
-        adapter = new BottomSheetAdapter(items);
+        adapter = new BottomSheetAdapter(items, selected);
         adapter.setCallback(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,6 +69,10 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment i
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void setCallback(OnItemBottomSheetClickCallback callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -79,6 +86,12 @@ public class CustomBottomSheetDialogFragment extends BottomSheetDialogFragment i
     @Override
     public void onDetach() {
         super.onDetach();
+        callback = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         callback = null;
     }
 

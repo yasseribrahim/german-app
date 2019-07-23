@@ -57,6 +57,12 @@ android {
         }
 
         android.applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                buildConfigField "String", "APP_BUILD_NUM", "\"" + getDateTime() + "\""
+            }
+        }
+
+        android.applicationVariants.all { variant ->
             variant.outputs.all { output ->
                 outputFileName = "german-app-" + variant.productFlavors[0].name + "-" + getDateTime() + ".apk"
             }
@@ -64,8 +70,9 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField "String", "HOST", "\"http://lms-api.mazeedit.com\""
-        it.buildConfigField "String", "BASE_URL", "\"/\""
+        it.buildConfigField "String", "HOST", "\"http://shamys-001-site10.ftempurl.com\""
+        it.buildConfigField "String", "BASE_URL", "\"api/\""
+        it.buildConfigField "String", "COPY_RIGHT_URL", "\"https://mazeedit.com/\""
     }
 
     compileOptions {
@@ -131,7 +138,8 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     // player
-    implementation 'com.github.halilozercan:BetterVideoPlayer:kotlin-SNAPSHOT'
+    implementation 'cn.jzvd:jiaozivideoplayer:7.0.5'
+
 }
 apply plugin: 'com.google.gms.google-services'
 

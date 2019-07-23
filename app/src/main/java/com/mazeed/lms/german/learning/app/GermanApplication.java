@@ -56,4 +56,14 @@ public class GermanApplication extends MultiDexApplication {
                 apiModule(new ApiModule(new File(getCacheDir(), "responses"), this, BuildConfig.HOST)).
                 build();
     }
+
+    public long getApplicationSize() {
+        File files = getBaseContext().getCacheDir();
+        // get size by KB
+        long size = 0;
+        for (File file : files.listFiles()) {
+            size += file.length();
+        }
+        return size / 1024;
+    }
 }

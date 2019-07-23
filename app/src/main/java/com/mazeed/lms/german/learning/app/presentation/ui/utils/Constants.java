@@ -7,11 +7,11 @@ package com.mazeed.lms.german.learning.app.presentation.ui.utils;
 public interface Constants {
     String ARG_MESSAGE_ID = "message_id";
 
-    String KEY_OPEN_NOTIFICATION = "OPEN_NOTIFICATION";
-
     String KEY_TITLE = "TITLE";
+    String KEY_URL = "KEY_URL";
+    String KEY_SELECTED = "KEY_SELECTED";
     String KEY_BOTTOM_SHEET_LIST = "BOTTOM_SHEET_LIST";
-    String KEY_VIDEO = "KEY_VIDEO";
+    String KEY_CONTENT = "KEY_CONTENT";
 
     int MAXIMUM_IMAGE_SIZE = 2048;// maximum size = 2 MB
 

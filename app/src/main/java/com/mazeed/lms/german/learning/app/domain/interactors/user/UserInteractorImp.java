@@ -5,14 +5,12 @@ import android.view.View;
 import com.mazeed.lms.german.learning.app.domain.controller.Controller;
 import com.mazeed.lms.german.learning.app.domain.interactors.BaseInteractor;
 import com.mazeed.lms.german.learning.app.domain.models.user.Authorization;
-import com.mazeed.lms.german.learning.app.domain.models.user.AuthorizationBody;
 import com.mazeed.lms.german.learning.app.domain.models.user.User;
 import com.mazeed.lms.german.learning.app.domain.utils.UserManager;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 /**
@@ -29,50 +27,36 @@ public class UserInteractorImp extends BaseInteractor implements UserInteractor 
     }
 
     @Override
-    public void getToken(AuthorizationBody body) {
+    public void login(User user) {
         callback.showProgress();
-        prepare(controller.getToken(body.getGrantType(), body.getUsername(), body.getPassword()),
-                new GetTokenObserver(callback, body));
+        prepare(controller.login(user), new LoginCompleteObserver(callback, user));
     }
 
     @Override
-    public void getUserInfo() {
+    public void register(User user) {
         callback.showProgress();
-        User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.getUserInfo(user.getAuthorization().getToken()), new GetUserInfoCompleteObserver(callback));
+        prepare(controller.register(user), new RegisterCompleteObserver(callback, user));
     }
 
     @Override
     public void logout() {
         callback.showProgress();
-        User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.deleteToken(user.getAuthorization().getToken()), new LogoutObserver(callback));
+        prepare(Observable.just(Boolean.TRUE), new LogoutCompleteObserver(callback));
     }
 
-    @Override
-    public void setDeviceToken(final String token) {
-        callback.showProgress();
-        User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.setDeviceToken(user.getAuthorization().getToken(), token), new SetDeviceTokenCompleteObserver(callback, token, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDeviceToken(token);
-            }
-        }));
-    }
+    private final class LoginCompleteObserver extends BaseObserver<Authorization> {
+        private User user;
 
-    private final class GetTokenObserver extends BaseObserver<Authorization> {
-        private AuthorizationBody body;
-
-        public GetTokenObserver(CallbackStates callback, AuthorizationBody body) {
+        public LoginCompleteObserver(CallbackStates callback, User user) {
             super(callback);
-            this.body = body;
+            this.user = user;
         }
 
         @Override
         public void onNext(Authorization authorization) {
             UserManager.getInstance().prepareAndStoreCurrentUser(authorization);
-            callback.onGetTokenComplete();
+            callback.onLoginComplete();
+            super.onNext(authorization);
         }
 
         @Override
@@ -93,27 +77,24 @@ public class UserInteractorImp extends BaseInteractor implements UserInteractor 
             callback.failure(message != null ? message : e.getMessage(), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getToken(body);
+                    login(user);
                 }
             });
         }
     }
 
-    private final class GetUserInfoCompleteObserver extends BaseObserver<User> {
+    private final class RegisterCompleteObserver extends BaseObserver<Authorization> {
+        private User user;
 
-        public GetUserInfoCompleteObserver(CallbackStates callback) {
+        public RegisterCompleteObserver(CallbackStates callback, User user) {
             super(callback);
+            this.user = user;
         }
 
         @Override
-        public void onNext(User user) {
-            UserManager.getInstance().prepareAndStoreCurrentUser(user);
-            if(user.isSupportedUser()) {
-                callback.onGetUserInfoComplete();
-            } else {
-                callback.ontUserNotSupportCallback();
-                callback.hideProgress();
-            }
+        public void onNext(Authorization authorization) {
+            callback.onRegisterComplete();
+            super.onNext(authorization);
         }
 
         @Override
@@ -134,19 +115,19 @@ public class UserInteractorImp extends BaseInteractor implements UserInteractor 
             callback.failure(message != null ? message : e.getMessage(), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getUserInfo();
+                    register(user);
                 }
             });
         }
     }
 
-    private final class LogoutObserver extends BaseObserver<ResponseBody> {
-        public LogoutObserver(CallbackStates callback) {
+    private final class LogoutCompleteObserver extends BaseObserver<Boolean> {
+        public LogoutCompleteObserver(CallbackStates callback) {
             super(callback);
         }
 
         @Override
-        public void onNext(ResponseBody result) {
+        public void onNext(Boolean result) {
             UserManager.getInstance().logout();
             callback.onLogoutComplete();
             super.onNext(result);
@@ -167,41 +148,6 @@ public class UserInteractorImp extends BaseInteractor implements UserInteractor 
                     logout();
                 }
             });
-        }
-    }
-
-    private final class SetDeviceTokenCompleteObserver extends BaseObserver<ResponseBody> {
-        private View.OnClickListener listener;
-        private String token;
-
-        public SetDeviceTokenCompleteObserver(CallbackStates callback, String token, View.OnClickListener listener) {
-            super(callback);
-            this.listener = listener;
-            this.token = token;
-        }
-
-        @Override
-        public void onNext(ResponseBody response) {
-            UserManager.getInstance().prepareAndStoreCurrentUser(token);
-            callback.onSetDeviceTokenComplete();
-        }
-
-        @Override
-        public void onComplete() {
-            super.onComplete();
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            super.onError(e);
-            if (e instanceof HttpException) {
-                if (((HttpException) e).code() == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-                    callback.unAuthorized();
-                    return;
-                }
-            }
-            String message = callback.getErrorMessage(e);
-            callback.failure(message != null ? message : e.getMessage(), listener);
         }
     }
 }

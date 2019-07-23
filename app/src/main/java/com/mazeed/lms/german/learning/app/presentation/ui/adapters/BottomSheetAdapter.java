@@ -21,9 +21,11 @@ import butterknife.ButterKnife;
 public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.ViewHolder> {
     private final List<BottomSheetItem> items;
     private OnItemBottomSheetClickCallback callback;
+    private int selected;
 
-    public BottomSheetAdapter(List<BottomSheetItem> items) {
+    public BottomSheetAdapter(List<BottomSheetItem> items, int selected) {
         this.items = items;
+        this.selected = selected;
     }
 
     public void setCallback(OnItemBottomSheetClickCallback callback) {
@@ -39,8 +41,12 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = items.get(position);
-        holder.content.setText(holder.item.getContentId());
-        holder.icon.setImageDrawable(holder.getIcon());
+        holder.content.setText(holder.item.getContent());
+        if (holder.item.getId() == selected) {
+            holder.selected.setImageDrawable(holder.getIcon(R.drawable.ic_radio_button_checked));
+        } else {
+            holder.selected.setImageDrawable(holder.getIcon(R.drawable.ic_radio_button_unchecked));
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +68,8 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.content)
         TextView content;
-        @BindView(R.id.icon)
-        ImageView icon;
+        @BindView(R.id.selected)
+        ImageView selected;
 
         View view;
         BottomSheetItem item;
@@ -74,8 +80,8 @@ public class BottomSheetAdapter extends RecyclerView.Adapter<BottomSheetAdapter.
             ButterKnife.bind(this, view);
         }
 
-        public Drawable getIcon() {
-            return ResourcesCompat.getDrawable(view.getContext().getResources(), item.getIconId(), null);
+        public Drawable getIcon(int icon) {
+            return ResourcesCompat.getDrawable(view.getContext().getResources(), icon, null);
         }
 
         @Override

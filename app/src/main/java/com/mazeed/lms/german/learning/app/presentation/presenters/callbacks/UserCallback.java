@@ -5,18 +5,12 @@ package com.mazeed.lms.german.learning.app.presentation.presenters.callbacks;
  */
 
 public interface UserCallback extends BaseCallback {
-    default void onGetTokenComplete() {
+    default void onLoginComplete() {
     }
 
-    default void onGetUserInfoComplete() {
+    default void onRegisterComplete() {
     }
 
     default void onLogoutComplete() {
-    }
-
-    default void onSetDeviceTokenComplete() {
-    }
-
-    default void ontUserNotSupportCallback() {
     }
 }

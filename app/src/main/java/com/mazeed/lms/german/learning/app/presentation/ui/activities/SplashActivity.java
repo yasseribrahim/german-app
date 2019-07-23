@@ -29,12 +29,11 @@ public class SplashActivity extends BaseActivity implements UserCallback {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            openHome();
-//            if (UserManager.getInstance().isExistUserLoggedIn()) {
-//                presenter.getUserInfo();
-//            } else {
-//                openLogin();
-//            }
+            if (UserManager.getInstance().isExistUserLoggedIn()) {
+                presenter.login(UserManager.getInstance().getCurrentUser());
+            } else {
+                openLogin();
+            }
         }
     };
 
@@ -81,18 +80,7 @@ public class SplashActivity extends BaseActivity implements UserCallback {
     }
 
     @Override
-    public void onGetUserInfoComplete() {
-        String token = Preferences.getDeviceToken();
-        if (token != null && !UserManager.getInstance().getCurrentUser().isAppTokenChanged(token)) {
-            openHome();
-        } else {
-            presenter.setDeviceToken(token);
-        }
-    }
-
-    @Override
-    public void ontUserNotSupportCallback() {
-        openLogin();
+    public void onHideProgress() {
     }
 
     @Override
@@ -100,7 +88,7 @@ public class SplashActivity extends BaseActivity implements UserCallback {
     }
 
     @Override
-    public void onSetDeviceTokenComplete() {
+    public void onLoginComplete() {
         openHome();
     }
 

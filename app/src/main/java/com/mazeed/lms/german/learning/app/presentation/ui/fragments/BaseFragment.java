@@ -94,6 +94,10 @@ public abstract class BaseFragment extends Fragment {
         return true;
     }
 
+    public void onShowError(String message, View.OnClickListener onClickListener) {
+        showRetrySnackBar(message, onClickListener);
+    }
+
     public void onShowProgress() {
         ProgressDialogFragment.show(activity.getSupportFragmentManager());
     }

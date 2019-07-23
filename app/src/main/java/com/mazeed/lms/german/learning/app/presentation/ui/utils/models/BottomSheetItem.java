@@ -8,19 +8,16 @@ import android.os.Parcelable;
  */
 public class BottomSheetItem implements Parcelable {
     private int id;
-    private int contentId;
+    private String content;
     private int iconId;
 
-    public BottomSheetItem(int id, int contentId, int iconId) {
-        this.id = id;
-        this.contentId = contentId;
-        this.iconId = iconId;
+    public BottomSheetItem() {
     }
 
-    public BottomSheetItem(Parcel in) {
-        this.id = in.readInt();
-        this.contentId = in.readInt();
-        this.iconId = in.readInt();
+    public BottomSheetItem(int id, String content, int iconId) {
+        this.id = id;
+        this.content = content;
+        this.iconId = iconId;
     }
 
     public int getId() {
@@ -31,12 +28,12 @@ public class BottomSheetItem implements Parcelable {
         this.id = id;
     }
 
-    public int getContentId() {
-        return contentId;
+    public String getContent() {
+        return content;
     }
 
-    public void setContentId(int contentId) {
-        this.contentId = contentId;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getIconId() {
@@ -66,10 +63,11 @@ public class BottomSheetItem implements Parcelable {
     public String toString() {
         return "BottomSheetItem{" +
                 "id=" + id +
-                ", contentId=" + contentId +
+                ", content=" + content +
                 ", iconId=" + iconId +
                 '}';
     }
+
 
     @Override
     public int describeContents() {
@@ -79,17 +77,23 @@ public class BottomSheetItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
-        dest.writeInt(this.contentId);
+        dest.writeString(this.content);
         dest.writeInt(this.iconId);
-        dest.writeInt(this.CONTENTS_FILE_DESCRIPTOR);
-        dest.writeInt(this.PARCELABLE_WRITE_RETURN_VALUE);
     }
 
-    public static final Creator CREATOR = new Creator() {
-        public BottomSheetItem createFromParcel(Parcel in) {
-            return new BottomSheetItem(in);
+    protected BottomSheetItem(Parcel in) {
+        this.id = in.readInt();
+        this.content = in.readString();
+        this.iconId = in.readInt();
+    }
+
+    public static final Creator<BottomSheetItem> CREATOR = new Creator<BottomSheetItem>() {
+        @Override
+        public BottomSheetItem createFromParcel(Parcel source) {
+            return new BottomSheetItem(source);
         }
 
+        @Override
         public BottomSheetItem[] newArray(int size) {
             return new BottomSheetItem[size];
         }

@@ -8,11 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mazeed.lms.german.learning.app.GermanApplication;
 import com.mazeed.lms.german.learning.app.domain.models.Language;
 import com.mazeed.lms.german.learning.app.domain.models.user.Authorization;
-import com.mazeed.lms.german.learning.app.domain.models.user.Station;
 import com.mazeed.lms.german.learning.app.domain.models.user.User;
-
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by interactive on 7/23/18.
@@ -76,12 +72,7 @@ public class UserManager {
     }
 
     public void prepareAndStoreCurrentUser(Authorization authorization) {
-        user.setAuthorization(authorization);
-        saveUser(user);
-    }
-
-    public void prepareAndStoreCurrentUser(String token) {
-        user.setAppToken(token);
+        user.setAuthorization(authorization.getAuthorizationDetails());
         saveUser(user);
     }
 
@@ -94,7 +85,6 @@ public class UserManager {
 
     public void logout() {
         user.setAuthorization(null);
-        user.setAppToken(null);
         saveUser(user);
         Preferences.clear();
         user = null;

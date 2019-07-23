@@ -4,6 +4,7 @@ import com.mazeed.lms.german.learning.app.domain.modules.ApiModule;
 import com.mazeed.lms.german.learning.app.domain.modules.ApplicationModule;
 import com.mazeed.lms.german.learning.app.domain.modules.PreferencesModule;
 import com.mazeed.lms.german.learning.app.presentation.presenters.user.UserPresenterImp;
+import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenterImp;
 
 import javax.inject.Singleton;
 
@@ -17,4 +18,6 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class, ApiModule.class, PreferencesModule.class})
 public interface ApplicationComponent {
     void inject(UserPresenterImp presenter);
+
+    void inject(ContentsPresenterImp presenter);
 }
