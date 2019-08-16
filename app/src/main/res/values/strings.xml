@@ -24,7 +24,7 @@
     <string name="str_empty_videos">Sorry, There are no Videos</string>
     <string name="str_not_matched_videos">Sorry, There are no Videos matched to filter</string>
     <string name="str_select_group">Select Group</string>
-
+    <string name="str_empty_data">Sorry, There are no Data</string>
     <string name="copy_right"><u>Copyright Mazeedit.com &#169;</u></string>
     <string name="message_sign_out_confirm">Are you sure sign-out?</string>
     <string name="title_sign_ou">Sign-Out</string>

@@ -1,8 +1,9 @@
 package com.mazeed.lms.german.learning.app.domain.interactors.contents;
 
 import com.mazeed.lms.german.learning.app.domain.interactors.MainInteractor;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Group;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lesson;
+import com.mazeed.lms.german.learning.app.domain.models.contents.LessonDetails;
 
 import java.util.List;
 
@@ -11,15 +12,17 @@ import java.util.List;
  */
 
 public interface ContentsInteractor extends MainInteractor {
-    void getContents();
+    void getAllGrades();
 
-    void getContentsByGroupId(int groupId);
+    void getLessons(int gradeId);
 
-    void getGroups();
+    void getLessonDetails(int lessonId);
 
     interface ContentsCallbackStates extends CallbackStates {
-        void onGetContentsComplete(List<Content> contents);
+        void onGetGradesComplete(List<Grade> grades);
 
-        void onGetGroupsComplete(List<Group> groups);
+        void onGetLessonsComplete(List<Lesson> lessons);
+
+        void onGetLessonDetailsComplete(LessonDetails details);
     }
 }

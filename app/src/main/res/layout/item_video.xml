@@ -61,7 +61,7 @@
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
-            android:id="@+id/group"
+            android:id="@+id/grade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
@@ -71,39 +71,7 @@
             android:paddingStart="@dimen/dimens_3dp"
             android:paddingEnd="@dimen/dimens_3dp"
             android:singleLine="true"
-            android:text="Group"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="@dimen/small_text_size" />
-
-        <TextView
-            android:id="@+id/grade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/group"
-            android:layout_marginStart="@dimen/dimens_5dp"
-            android:layout_marginEnd="@dimen/dimens_5dp"
-            android:layout_toStartOf="@+id/date"
-            android:gravity="start"
-            android:paddingStart="@dimen/dimens_3dp"
-            android:paddingEnd="@dimen/dimens_3dp"
-            android:singleLine="true"
             android:text="Grade"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="@dimen/small_text_size" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/group"
-            android:layout_marginStart="@dimen/dimens_5dp"
-            android:layout_marginEnd="@dimen/dimens_5dp"
-            android:layout_alignParentEnd="true"
-            android:gravity="start"
-            android:paddingStart="@dimen/dimens_3dp"
-            android:paddingEnd="@dimen/dimens_3dp"
-            android:singleLine="true"
-            android:text="12/12/2010"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="@dimen/small_text_size" />
     </RelativeLayout>

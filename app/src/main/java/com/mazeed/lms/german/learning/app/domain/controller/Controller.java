@@ -2,7 +2,9 @@ package com.mazeed.lms.german.learning.app.domain.controller;
 
 import com.mazeed.lms.german.learning.app.BuildConfig;
 import com.mazeed.lms.german.learning.app.domain.models.contents.Contents;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Groups;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grades;
+import com.mazeed.lms.german.learning.app.domain.models.contents.LessonDetails;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lessons;
 import com.mazeed.lms.german.learning.app.domain.models.user.Authorization;
 import com.mazeed.lms.german.learning.app.domain.models.user.User;
 
@@ -27,13 +29,13 @@ public interface Controller {
     }
 
     interface ContentsController {
-        @GET(BuildConfig.BASE_URL + "Content/getall")
-        Observable<Contents> getAll(@Header("Authorization") String authorization);
+        @GET(BuildConfig.BASE_URL + "Grade/GetAll")
+        Observable<Grades> getAllGrades(@Header("Authorization") String authorization);
 
-        @GET(BuildConfig.BASE_URL + "Content/GetAllByGradeGroupId")
-        Observable<Contents> getAllByGroupId(@Header("Authorization") String authorization, @Query("GroupId") int groupId);
+        @GET(BuildConfig.BASE_URL + "Lesson/GetAllByGradeId")
+        Observable<Lessons> getLessonsByGradeId(@Header("Authorization") String authorization, @Query("GradeId") int gradeId);
 
-        @GET(BuildConfig.BASE_URL + "Group/getall")
-        Observable<Groups> getAllGroups(@Header("Authorization") String authorization);
+        @GET(BuildConfig.BASE_URL + "Lesson/GetById")
+        Observable<LessonDetails> getLessonDetails(@Header("Authorization") String authorization, @Query("Id") int id);
     }
 }

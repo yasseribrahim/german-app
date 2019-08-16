@@ -192,5 +192,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onHideProgress() {
         ProgressDialogFragment.hide(getSupportFragmentManager());
     }
+
+    protected void hideKeyBoard() {
+        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (getCurrentFocus() != null)
+            manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }
 

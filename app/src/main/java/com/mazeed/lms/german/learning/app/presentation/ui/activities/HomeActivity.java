@@ -24,7 +24,7 @@ import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.User
 import com.mazeed.lms.german.learning.app.presentation.presenters.user.UserPresenter;
 import com.mazeed.lms.german.learning.app.presentation.presenters.user.UserPresenterImp;
 import com.mazeed.lms.german.learning.app.presentation.ui.fragments.AboutFragment;
-import com.mazeed.lms.german.learning.app.presentation.ui.fragments.ContentsFragment;
+import com.mazeed.lms.german.learning.app.presentation.ui.fragments.GradesFragment;
 import com.mazeed.lms.german.learning.app.presentation.ui.fragments.WebViewFragment;
 
 import butterknife.BindView;
@@ -136,7 +136,7 @@ public class HomeActivity extends BaseActivity implements UserCallback, Navigati
         String tag = null;
         switch (position) {
             case 0:
-                fragment = ContentsFragment.newInstance();
+                fragment = GradesFragment.newInstance();
                 titleId = R.string.menu_home;
                 break;
             case 1:

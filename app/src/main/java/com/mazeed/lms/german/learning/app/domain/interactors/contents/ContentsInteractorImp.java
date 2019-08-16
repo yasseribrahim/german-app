@@ -4,8 +4,9 @@ import android.view.View;
 
 import com.mazeed.lms.german.learning.app.domain.controller.Controller;
 import com.mazeed.lms.german.learning.app.domain.interactors.BaseInteractor;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Contents;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Groups;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grades;
+import com.mazeed.lms.german.learning.app.domain.models.contents.LessonDetails;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lessons;
 import com.mazeed.lms.german.learning.app.domain.models.user.User;
 import com.mazeed.lms.german.learning.app.domain.utils.UserManager;
 
@@ -27,36 +28,36 @@ public class ContentsInteractorImp extends BaseInteractor implements ContentsInt
     }
 
     @Override
-    public void getContents() {
+    public void getAllGrades() {
         callback.showProgress();
         User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.getAll(user.getToken()), new GetContentsCompleteObserver(callback));
+        prepare(controller.getAllGrades(user.getToken()), new GetGradesCompleteObserver(callback));
     }
 
     @Override
-    public void getContentsByGroupId(int groupId) {
+    public void getLessons(int gradeId) {
         callback.showProgress();
         User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.getAllByGroupId(user.getToken(), groupId), new GetContentsCompleteObserver(callback));
+        prepare(controller.getLessonsByGradeId(user.getToken(), gradeId), new GetLessonsCompleteObserver(gradeId, callback));
     }
 
     @Override
-    public void getGroups() {
+    public void getLessonDetails(int lessonId) {
         callback.showProgress();
         User user = UserManager.getInstance().getCurrentUser();
-        prepare(controller.getAllGroups(user.getToken()), new GetGroupsCompleteObserver(callback));
+        prepare(controller.getLessonDetails(user.getToken(), lessonId), new GetLessonDetailsCompleteObserver(lessonId, callback));
     }
 
-    private final class GetContentsCompleteObserver extends BaseObserver<Contents> {
+    private final class GetGradesCompleteObserver extends BaseObserver<Grades> {
 
-        public GetContentsCompleteObserver(ContentsCallbackStates callback) {
+        public GetGradesCompleteObserver(ContentsCallbackStates callback) {
             super(callback);
         }
 
         @Override
-        public void onNext(Contents contents) {
-            callback.onGetContentsComplete(contents.getContents());
-            super.onNext(contents);
+        public void onNext(Grades grades) {
+            callback.onGetGradesComplete(grades.getGrades());
+            super.onNext(grades);
         }
 
         @Override
@@ -77,22 +78,24 @@ public class ContentsInteractorImp extends BaseInteractor implements ContentsInt
             callback.failure(message != null ? message : e.getMessage(), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getContents();
+                    getAllGrades();
                 }
             });
         }
     }
 
-    private final class GetGroupsCompleteObserver extends BaseObserver<Groups> {
+    private final class GetLessonsCompleteObserver extends BaseObserver<Lessons> {
+        private int gradeId;
 
-        public GetGroupsCompleteObserver(ContentsCallbackStates callback) {
+        public GetLessonsCompleteObserver(int gradeId, ContentsCallbackStates callback) {
             super(callback);
+            this.gradeId = gradeId;
         }
 
         @Override
-        public void onNext(Groups groups) {
-            callback.onGetGroupsComplete(groups.getGroups());
-            super.onNext(groups);
+        public void onNext(Lessons lessons) {
+            callback.onGetLessonsComplete(lessons.getLessons());
+            super.onNext(lessons);
         }
 
         @Override
@@ -113,7 +116,45 @@ public class ContentsInteractorImp extends BaseInteractor implements ContentsInt
             callback.failure(message != null ? message : e.getMessage(), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getContents();
+                    getLessons(gradeId);
+                }
+            });
+        }
+    }
+
+    private final class GetLessonDetailsCompleteObserver extends BaseObserver<LessonDetails> {
+        private int lessonId;
+
+        public GetLessonDetailsCompleteObserver(int lessonId, ContentsCallbackStates callback) {
+            super(callback);
+            this.lessonId = lessonId;
+        }
+
+        @Override
+        public void onNext(LessonDetails details) {
+            callback.onGetLessonDetailsComplete(details);
+            super.onNext(details);
+        }
+
+        @Override
+        public void onComplete() {
+            super.onComplete();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            super.onError(e);
+            if (e instanceof HttpException) {
+                if (((HttpException) e).code() == HttpsURLConnection.HTTP_UNAUTHORIZED || ((HttpException) e).code() == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    callback.unAuthorized();
+                    return;
+                }
+            }
+            String message = callback.getErrorMessage(e);
+            callback.failure(message != null ? message : e.getMessage(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getLessonDetails(lessonId);
                 }
             });
         }

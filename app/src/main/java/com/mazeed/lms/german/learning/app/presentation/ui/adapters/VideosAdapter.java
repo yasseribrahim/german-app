@@ -12,36 +12,32 @@ import com.bumptech.glide.Glide;
 import com.mazeed.lms.german.learning.app.R;
 import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
 import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnPlayContentCallback;
-import com.mazeed.lms.german.learning.app.presentation.ui.utils.DatesUtils;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContentsAdapter extends RecyclerView.Adapter<ContentsAdapter.ViewHolder> {
+public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
     private final List<Content> contents;
     private final OnPlayContentCallback callback;
 
-    public ContentsAdapter(List<Content> contents, OnPlayContentCallback callback) {
+    public VideosAdapter(List<Content> contents, OnPlayContentCallback callback) {
         this.contents = contents;
         this.callback = callback;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_content, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.content = contents.get(position);
-        holder.title.setText(holder.content.getName());
-        holder.group.setText(holder.content.getGroupName());
+        holder.title.setText(holder.content.getGradeName());
         holder.grade.setText(holder.content.getGradeName());
-        holder.date.setText(DatesUtils.formatDateOnly(Calendar.getInstance().getTime()));
         Glide.with(holder.itemView.getContext())
                 .load(holder.content.getImage())
                 .placeholder(ResourcesCompat.getDrawable(holder.itemView.getContext().getResources(), R.drawable.default_image, null))
@@ -70,12 +66,8 @@ public class ContentsAdapter extends RecyclerView.Adapter<ContentsAdapter.ViewHo
         ImageView image;
         @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.group)
-        TextView group;
         @BindView(R.id.grade)
         TextView grade;
-        @BindView(R.id.date)
-        TextView date;
         @BindView(R.id.play)
         ImageView play;
 

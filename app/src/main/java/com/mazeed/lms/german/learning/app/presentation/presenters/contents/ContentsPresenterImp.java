@@ -4,10 +4,11 @@ import android.view.View;
 
 import com.mazeed.lms.german.learning.app.GermanApplication;
 import com.mazeed.lms.german.learning.app.domain.controller.Controller;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
 import com.mazeed.lms.german.learning.app.domain.interactors.contents.ContentsInteractor;
 import com.mazeed.lms.german.learning.app.domain.interactors.contents.ContentsInteractorImp;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Group;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lesson;
+import com.mazeed.lms.german.learning.app.domain.models.contents.LessonDetails;
 import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.ContentsCallback;
 
 import java.util.List;
@@ -33,18 +34,18 @@ public class ContentsPresenterImp implements ContentsPresenter, ContentsInteract
     }
 
     @Override
-    public void getContents() {
-        interactor.getContents();
+    public void getAllGrades() {
+        interactor.getAllGrades();
     }
 
     @Override
-    public void getContentsByGroupId(int groupId) {
-        interactor.getContentsByGroupId(groupId);
+    public void getLessons(int gradeId) {
+        interactor.getLessons(gradeId);
     }
 
     @Override
-    public void getGroups() {
-        interactor.getGroups();
+    public void getLessonDetails(int lessonId) {
+        interactor.getLessonDetails(lessonId);
     }
 
     @Override
@@ -105,16 +106,23 @@ public class ContentsPresenterImp implements ContentsPresenter, ContentsInteract
     }
 
     @Override
-    public void onGetContentsComplete(List<Content> contents) {
+    public void onGetGradesComplete(List<Grade> grades) {
         if (view != null) {
-            view.onGetContentsComplete(contents);
+            view.onGetGradesComplete(grades);
         }
     }
 
     @Override
-    public void onGetGroupsComplete(List<Group> groups) {
+    public void onGetLessonsComplete(List<Lesson> lessons) {
         if (view != null) {
-            view.onGetGroupsComplete(groups);
+            view.onGetLessonsComplete(lessons);
+        }
+    }
+
+    @Override
+    public void onGetLessonDetailsComplete(LessonDetails details) {
+        if (view != null) {
+            view.onGetLessonDetailsComplete(details);
         }
     }
 }

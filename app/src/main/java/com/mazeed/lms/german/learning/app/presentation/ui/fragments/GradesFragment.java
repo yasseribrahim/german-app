@@ -16,20 +16,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Group;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
 import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.ContentsCallback;
 import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenter;
 import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenterImp;
+import com.mazeed.lms.german.learning.app.presentation.ui.activities.LessonsActivity;
 import com.mazeed.lms.german.learning.app.presentation.ui.activities.VideoPlayerActivity;
-import com.mazeed.lms.german.learning.app.presentation.ui.adapters.ContentsAdapter;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnItemBottomSheetClickCallback;
+import com.mazeed.lms.german.learning.app.presentation.ui.adapters.GradesAdapter;
+import com.mazeed.lms.german.learning.app.presentation.ui.adapters.VideosAdapter;
 import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnPlayContentCallback;
 import com.mazeed.lms.german.learning.app.presentation.ui.custom.CustomDividerItemDecoration;
 import com.mazeed.lms.german.learning.app.presentation.ui.dialogs.CustomBottomSheetDialogFragment;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.Constants;
-import com.mazeed.lms.german.learning.app.presentation.ui.utils.models.BottomSheetItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,7 @@ import butterknife.OnClick;
  * Activities containing this fragment MUST implement the {@link OnListInteractionListener}
  * interface.
  */
-public class ContentsFragment extends BaseFragment implements ContentsCallback, OnPlayContentCallback, SearchView.OnQueryTextListener, OnItemBottomSheetClickCallback {
+public class GradesFragment extends BaseFragment implements ContentsCallback, OnListInteractionListener<Grade>, SearchView.OnQueryTextListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -60,29 +58,24 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
     RelativeLayout emptyVideos;
     @BindView(R.id.message)
     TextView message;
-    @BindView(R.id.btn_select_group)
-    TextView btnSelectGroup;
 
     private CustomBottomSheetDialogFragment sheet;
     private GridLayoutManager manager;
     private ContentsPresenter presenter;
-    private ContentsAdapter adapter;
-    private List<Content> contents;
-    private List<Group> groups;
-    private Group selectedGroup;
-    private ArrayList<BottomSheetItem> items;
-    private List<Content> filteredContents;
+    private GradesAdapter adapter;
+    private List<Grade> grades;
+    private List<Grade> filteredGrades;
     private String searchText;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ContentsFragment() {
+    public GradesFragment() {
     }
 
-    public static ContentsFragment newInstance() {
-        ContentsFragment fragment = new ContentsFragment();
+    public static GradesFragment newInstance() {
+        GradesFragment fragment = new GradesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -95,7 +88,7 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contents, container, false);
+        View view = inflater.inflate(R.layout.fragment_grades, container, false);
         ButterKnife.bind(this, view);
 
         presenter = new ContentsPresenterImp(this);
@@ -107,25 +100,24 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
             searchText = "";
         }
 
-        items = new ArrayList<>();
-        groups = new ArrayList<>();
-        contents = new ArrayList<>();
-        filteredContents = new ArrayList<>();
-        adapter = new ContentsAdapter(filteredContents, this);
+        grades = new ArrayList<>();
+        grades = new ArrayList<>();
+        filteredGrades = new ArrayList<>();
+        adapter = new GradesAdapter(filteredGrades, this);
         manager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(manager);
         CustomDividerItemDecoration dividerItemDecoration = new CustomDividerItemDecoration(getContext(), R.dimen.divider_mid);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
 
-        presenter.getGroups();
+        presenter.getAllGrades();
 
         refreshLayout.setColorSchemeResources(R.color.refreshColor1, R.color.refreshColor2,
                 R.color.refreshColor3, R.color.refreshColor4);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getGroups();
+                presenter.getAllGrades();
             }
         });
 
@@ -143,17 +135,6 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
                     manager.setSpanCount(1);
                     break;
             }
-        }
-    }
-
-    @OnClick(R.id.btn_select_group)
-    public void onSelectGroupClicked() {
-        if (!groups.isEmpty()) {
-            sheet = CustomBottomSheetDialogFragment.newInstance(getString(R.string.str_select_group), items, selectedGroup != null ? selectedGroup.getId().intValue() : -1);
-            sheet.setCallback(this);
-            sheet.show(getFragmentManager(), "");
-        } else {
-            showInfoSnackBar(R.string.str_empty_groups);
         }
     }
 
@@ -207,27 +188,12 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
     }
 
     @Override
-    public void onGetGroupsComplete(List<Group> groups) {
-        this.groups.clear();
-        this.groups.addAll(groups);
-        this.items.clear();
-        if (!groups.isEmpty()) {
-            for (Group group : groups) {
-                items.add(new BottomSheetItem(group.getId().intValue(), group.getName(), -1));
-            }
-            setSelectedGroup(selectedGroup != null ? selectedGroup : groups.get(0));
-        } else {
-            showInfoSnackBar(R.string.str_empty_groups);
-        }
-    }
-
-    @Override
-    public void onGetContentsComplete(List<Content> contents) {
-        this.contents.clear();
-        this.contents.addAll(contents);
+    public void onGetGradesComplete(List<Grade> grades) {
+        this.grades.clear();
+        this.grades.addAll(grades);
         applyFilter("");
         searchView.setQuery("", false);
-        if (!contents.isEmpty()) {
+        if (!grades.isEmpty()) {
             emptyVideos.setVisibility(View.GONE);
         } else {
             emptyVideos.setVisibility(View.VISIBLE);
@@ -236,26 +202,20 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
     }
 
     @Override
-    public void onPlayContentCallback(Content content) {
-        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-        intent.putExtra(Constants.KEY_CONTENT, content);
+    public void onListInteraction(Grade grade) {
+        Intent intent = new Intent(getContext(), LessonsActivity.class);
+        intent.putExtra(Constants.KEY_GRADE, grade);
         startActivity(intent);
     }
 
-    private void setSelectedGroup(Group group) {
-        this.selectedGroup = group;
-        btnSelectGroup.setText(group.getName());
-        presenter.getContentsByGroupId(group.getId().intValue());
-    }
-
     private void applyFilter(String filter) {
-        this.filteredContents.clear();
+        this.filteredGrades.clear();
         if (!filter.isEmpty()) {
             showSearch(false);
             fillFilterList(filter);
         } else {
             showSearch(true);
-            this.filteredContents.addAll(contents);
+            this.filteredGrades.addAll(grades);
         }
         adapter.notifyDataSetChanged();
     }
@@ -271,16 +231,16 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
     }
 
     private void fillFilterList(String filter) {
-        this.filteredContents.clear();
-        for (Content content : contents) {
-            if (content.getName().toLowerCase().contains(filter.toLowerCase())) {
-                filteredContents.add(content);
+        this.filteredGrades.clear();
+        for (Grade grade : grades) {
+            if (grade.getName().toLowerCase().contains(filter.toLowerCase())) {
+                filteredGrades.add(grade);
             }
         }
-        if (contents.isEmpty()) {
+        if (grades.isEmpty()) {
             emptyVideos.setVisibility(View.VISIBLE);
             message.setText(R.string.str_empty_videos);
-        } else if (filteredContents.isEmpty()) {
+        } else if (filteredGrades.isEmpty()) {
             emptyVideos.setVisibility(View.VISIBLE);
             message.setText(R.string.str_not_matched_videos);
         } else {
@@ -298,25 +258,5 @@ public class ContentsFragment extends BaseFragment implements ContentsCallback, 
     public boolean onQueryTextChange(String s) {
         applyFilter(s);
         return false;
-    }
-
-    @Override
-    public void onClick(BottomSheetItem item) {
-        if (selectedGroup == null || selectedGroup.getId().intValue() != item.getId()) {
-            setSelectedGroup(getGroup(item.getId()));
-        }
-
-        if (sheet != null) {
-            sheet.dismiss();
-        }
-    }
-
-    private Group getGroup(int id) {
-        for (Group group : groups) {
-            if (group.getId().intValue() == id) {
-                return group;
-            }
-        }
-        return null;
     }
 }

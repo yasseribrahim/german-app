@@ -7,9 +7,9 @@ import com.mazeed.lms.german.learning.app.presentation.presenters.MainPresenter;
  */
 
 public interface ContentsPresenter extends MainPresenter {
-    void getContents();
+    void getAllGrades();
 
-    void getContentsByGroupId(int groupId);
+    void getLessons(int gradeId);
 
-    void getGroups();
+    void getLessonDetails(int lessonId);
 }

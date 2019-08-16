@@ -1,14 +1,19 @@
 package com.mazeed.lms.german.learning.app.presentation.presenters.callbacks;
 
-import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Group;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lesson;
+import com.mazeed.lms.german.learning.app.domain.models.contents.LessonDetails;
 
 import java.util.List;
 
 public interface ContentsCallback extends BaseCallback {
-    default void onGetContentsComplete(List<Content> contents) {
+
+    default void onGetGradesComplete(List<Grade> grades) {
     }
 
-    default void onGetGroupsComplete(List<Group> groups) {
+    default void onGetLessonsComplete(List<Lesson> lessons) {
+    }
+
+    default void onGetLessonDetailsComplete(LessonDetails details) {
     }
 }

@@ -7,25 +7,12 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Group implements Parcelable {
+public class Grade implements Parcelable {
 
-    @SerializedName("GradeId")
-    private Long gradeId;
     @SerializedName("Id")
     private Long id;
     @Expose
     private String name;
-
-    public Group() {
-    }
-
-    public Long getGradeId() {
-        return gradeId;
-    }
-
-    public void setGradeId(Long gradeId) {
-        this.gradeId = gradeId;
-    }
 
     public Long getId() {
         return id;
@@ -50,26 +37,27 @@ public class Group implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.gradeId);
         dest.writeValue(this.id);
         dest.writeString(this.name);
     }
 
-    protected Group(Parcel in) {
-        this.gradeId = (Long) in.readValue(Long.class.getClassLoader());
+    public Grade() {
+    }
+
+    protected Grade(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
     }
 
-    public static final Parcelable.Creator<Group> CREATOR = new Parcelable.Creator<Group>() {
+    public static final Parcelable.Creator<Grade> CREATOR = new Parcelable.Creator<Grade>() {
         @Override
-        public Group createFromParcel(Parcel source) {
-            return new Group(source);
+        public Grade createFromParcel(Parcel source) {
+            return new Grade(source);
         }
 
         @Override
-        public Group[] newArray(int size) {
-            return new Group[size];
+        public Grade[] newArray(int size) {
+            return new Grade[size];
         }
     };
 }
