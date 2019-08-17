@@ -18,6 +18,10 @@ public class Content implements Parcelable {
     @SerializedName("Text")
     private String text;
 
+    public Content(String text) {
+        this.text = text;
+    }
+
     public String getGradeName() {
         return gradeName;
     }

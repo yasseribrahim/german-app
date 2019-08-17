@@ -36,8 +36,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.content = contents.get(position);
-        holder.title.setText(holder.content.getGradeName());
-        holder.grade.setText(holder.content.getGradeName());
+        holder.title.setText(holder.content.getText());
         Glide.with(holder.itemView.getContext())
                 .load(holder.content.getImage())
                 .placeholder(ResourcesCompat.getDrawable(holder.itemView.getContext().getResources(), R.drawable.default_image, null))
@@ -66,8 +65,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         ImageView image;
         @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.grade)
-        TextView grade;
         @BindView(R.id.play)
         ImageView play;
 

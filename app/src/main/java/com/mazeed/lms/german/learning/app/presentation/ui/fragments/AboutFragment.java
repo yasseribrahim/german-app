@@ -11,7 +11,7 @@ import com.mazeed.lms.german.learning.app.BuildConfig;
 import com.mazeed.lms.german.learning.app.GermanApplication;
 import com.mazeed.lms.german.learning.app.R;
 import com.mazeed.lms.german.learning.app.presentation.ui.activities.WebViewActivity;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.Constants;
 
 import butterknife.BindView;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnInteractionListener}
  * interface.
  */
 public class AboutFragment extends BaseFragment {

@@ -23,6 +23,7 @@
     <string name="str_empty_groups">Sorry, There are no Groups added yet</string>
     <string name="str_empty_videos">Sorry, There are no Videos</string>
     <string name="str_not_matched_videos">Sorry, There are no Videos matched to filter</string>
+    <string name="str_not_matched_data">Sorry, There are no Data matched to filter</string>
     <string name="str_select_group">Select Group</string>
     <string name="str_empty_data">Sorry, There are no Data</string>
     <string name="copy_right"><u>Copyright Mazeedit.com &#169;</u></string>
@@ -45,9 +46,18 @@
     <string name="dialog_msg_loading">Loading...</string>
     <string name="str_application_size">Application Size: </string>
     <string name="str_application_size_unit">KB</string>
-    <string name="str_application_version">Vesion: </string>
+    <string name="str_application_version">Version: </string>
     <string name="str_application_build">Build: </string>
 
-    <string name="str_double">Double</string>
-    <string name="str_single">Single</string>
+    <string name="str_single">Single Mode</string>
+    <string name="str_double">Double Mode</string>
+    <string name="str_show">Show</string>
+
+    <string name="content_type_exams">Exams</string>
+    <string name="content_type_explain">Explain</string>
+    <string name="content_type_situations">Situations</string>
+    <string name="content_type_text_messages">Text Messages</string>
+    <string name="content_type_topics_expression">Topics Expression</string>
+    <string name="content_type_videos">Videos (%1$d)</string>
+    <string name="content_type_words">Words</string>
 </resources>

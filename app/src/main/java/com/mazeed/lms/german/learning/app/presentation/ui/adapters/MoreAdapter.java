@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.models.MoreItem;
 
 import java.util.List;
@@ -20,9 +20,9 @@ import butterknife.ButterKnife;
 
 public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.ViewHolder> {
     private final List<MoreItem> items;
-    private final OnListInteractionListener listener;
+    private final OnInteractionListener listener;
 
-    public MoreAdapter(List<MoreItem> items, OnListInteractionListener listener) {
+    public MoreAdapter(List<MoreItem> items, OnInteractionListener listener) {
         this.items = items;
         this.listener = listener;
     }
@@ -45,7 +45,7 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.ViewHolder> {
                 if (null != listener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an order has been selected.
-                    listener.onListInteraction(holder.item);
+                    listener.onInteraction(holder.item);
                 }
             }
         });

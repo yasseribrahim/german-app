@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -19,9 +20,8 @@ import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.Cont
 import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenter;
 import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenterImp;
 import com.mazeed.lms.german.learning.app.presentation.ui.adapters.LessonsAdapter;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
 import com.mazeed.lms.german.learning.app.presentation.ui.custom.CustomDividerItemDecoration;
-import com.mazeed.lms.german.learning.app.presentation.ui.dialogs.CustomBottomSheetDialogFragment;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.Constants;
 
 import java.util.ArrayList;
@@ -35,10 +35,12 @@ import butterknife.OnClick;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnInteractionListener}
  * interface.
  */
-public class LessonsActivity extends BaseActivity implements ContentsCallback, OnListInteractionListener<Lesson>, SearchView.OnQueryTextListener {
+public class LessonsActivity extends BaseActivity implements ContentsCallback, OnInteractionListener<Lesson>, SearchView.OnQueryTextListener {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -49,12 +51,11 @@ public class LessonsActivity extends BaseActivity implements ContentsCallback, O
     ImageView imageViewCancel;
     @BindView(R.id.search_view)
     SearchView searchView;
-    @BindView(R.id.empty_videos)
-    RelativeLayout emptyVideos;
+    @BindView(R.id.empty)
+    RelativeLayout empty;
     @BindView(R.id.message)
     TextView message;
 
-    private CustomBottomSheetDialogFragment sheet;
     private GridLayoutManager manager;
     private ContentsPresenter presenter;
     private LessonsAdapter adapter;
@@ -68,6 +69,8 @@ public class LessonsActivity extends BaseActivity implements ContentsCallback, O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         grade = getIntent().getParcelableExtra(Constants.KEY_GRADE);
         presenter = new ContentsPresenterImp(this);
@@ -106,17 +109,12 @@ public class LessonsActivity extends BaseActivity implements ContentsCallback, O
         setActionBarTitle(grade.getName());
     }
 
-    @OnCheckedChanged({R.id.radio_double, R.id.radio_single})
+    @OnCheckedChanged(R.id.preview_mode)
     public void onChangeMode(CompoundButton button, boolean checked) {
         if (checked) {
-            switch (button.getId()) {
-                case R.id.radio_double:
-                    manager.setSpanCount(2);
-                    break;
-                case R.id.radio_single:
-                    manager.setSpanCount(1);
-                    break;
-            }
+            manager.setSpanCount(1);
+        } else {
+            manager.setSpanCount(2);
         }
     }
 
@@ -169,17 +167,17 @@ public class LessonsActivity extends BaseActivity implements ContentsCallback, O
         applyFilter("");
         searchView.setQuery("", false);
         if (!lessons.isEmpty()) {
-            emptyVideos.setVisibility(View.GONE);
+            empty.setVisibility(View.GONE);
         } else {
-            emptyVideos.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_empty_videos);
+            empty.setVisibility(View.VISIBLE);
+            message.setText(R.string.str_empty_data);
         }
     }
 
     @Override
-    public void onListInteraction(Lesson lesson) {
-        Intent intent = new Intent(this, VideoPlayerActivity.class);
-        intent.putExtra(Constants.KEY_CONTENT, intent);
+    public void onInteraction(Lesson lesson) {
+        Intent intent = new Intent(this, LessonDetailsActivity.class);
+        intent.putExtra(Constants.KEY_LESSON, lesson);
         startActivity(intent);
     }
 
@@ -213,13 +211,13 @@ public class LessonsActivity extends BaseActivity implements ContentsCallback, O
             }
         }
         if (lessons.isEmpty()) {
-            emptyVideos.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_empty_videos);
+            empty.setVisibility(View.VISIBLE);
+            message.setText(R.string.str_empty_data);
         } else if (filteredLessons.isEmpty()) {
-            emptyVideos.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_not_matched_videos);
+            empty.setVisibility(View.VISIBLE);
+            message.setText(R.string.str_not_matched_data);
         } else {
-            emptyVideos.setVisibility(View.GONE);
+            empty.setVisibility(View.GONE);
         }
     }
 

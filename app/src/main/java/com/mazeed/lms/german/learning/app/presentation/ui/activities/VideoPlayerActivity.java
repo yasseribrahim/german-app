@@ -26,7 +26,7 @@ public class VideoPlayerActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         Content content = getIntent().getParcelableExtra(Constants.KEY_CONTENT);
-        player.setUp(content.getPath(), content.getName());
+        player.setUp(content.getPath(), content.getGradeName());
     }
 
     @Override

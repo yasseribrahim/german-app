@@ -52,10 +52,10 @@
                 android:layout_marginBottom="@dimen/dimens_3dp"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
                 app:spanCount="2"
-                tools:listitem="@layout/item_general" />
+                tools:listitem="@layout/item_video" />
 
             <include
-                layout="@layout/layout_empty"
+                layout="@layout/layout_empty_videos"
                 android:visibility="gone" />
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

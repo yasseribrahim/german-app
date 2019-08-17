@@ -1,0 +1,10 @@
+<android.support.v7.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/preview_mode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textOff="@string/str_single"
+    android:textOn="@string/str_double"
+    android:text="@string/str_single"
+    app:switchPadding="@dimen/dimens_5dp"
+    app:theme="@style/Color1SwitchStyle" />

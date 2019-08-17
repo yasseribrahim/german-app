@@ -19,25 +19,13 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimens_150dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/default_image" />
-
-        <ImageView
-            android:id="@+id/separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/image"
-            android:layout_marginStart="@dimen/dimens_5dp"
-            android:layout_marginTop="@dimen/dimens_5dp"
-            android:layout_marginEnd="@dimen/dimens_5dp"
-            android:layout_marginBottom="@dimen/dimens_5dp"
-            android:src="@color/gray_dark" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/separator"
+            android:layout_below="@+id/image"
             android:layout_marginStart="@dimen/dimens_5dp"
             android:layout_marginEnd="@dimen/dimens_5dp"
             android:layout_marginBottom="@dimen/dimens_3dp"
@@ -46,20 +34,5 @@
             android:singleLine="true"
             android:text="Title"
             android:textAppearance="?attr/textAppearanceListItem" />
-
-        <TextView
-            android:id="@+id/grade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_marginStart="@dimen/dimens_5dp"
-            android:layout_marginEnd="@dimen/dimens_5dp"
-            android:gravity="start"
-            android:paddingStart="@dimen/dimens_3dp"
-            android:paddingEnd="@dimen/dimens_3dp"
-            android:singleLine="true"
-            android:text="Grade"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="@dimen/small_text_size" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

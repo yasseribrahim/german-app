@@ -16,7 +16,6 @@
         android:theme="@style/AppTheme.Dark"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
         <activity
             android:name=".presentation.ui.activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -24,6 +23,7 @@
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,6 +36,18 @@
             android:name=".presentation.ui.activities.LessonsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".presentation.ui.activities.LessonDetailsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".presentation.ui.activities.VideosActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".presentation.ui.activities.LoginActivity"

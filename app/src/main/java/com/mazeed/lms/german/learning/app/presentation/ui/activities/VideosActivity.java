@@ -1,28 +1,25 @@
-package com.mazeed.lms.german.learning.app.presentation.ui.fragments;
+package com.mazeed.lms.german.learning.app.presentation.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
-import com.mazeed.lms.german.learning.app.presentation.presenters.callbacks.ContentsCallback;
-import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenter;
-import com.mazeed.lms.german.learning.app.presentation.presenters.contents.ContentsPresenterImp;
-import com.mazeed.lms.german.learning.app.presentation.ui.activities.LessonsActivity;
-import com.mazeed.lms.german.learning.app.presentation.ui.adapters.GradesAdapter;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Content;
+import com.mazeed.lms.german.learning.app.domain.models.contents.Lesson;
+import com.mazeed.lms.german.learning.app.presentation.ui.adapters.VideosAdapter;
 import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnPlayContentCallback;
 import com.mazeed.lms.german.learning.app.presentation.ui.custom.CustomDividerItemDecoration;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.Constants;
 
@@ -40,7 +37,9 @@ import butterknife.OnClick;
  * Activities containing this fragment MUST implement the {@link OnInteractionListener}
  * interface.
  */
-public class GradesFragment extends BaseFragment implements ContentsCallback, OnInteractionListener<Grade>, SearchView.OnQueryTextListener {
+public class VideosActivity extends BaseActivity implements OnPlayContentCallback, SearchView.OnQueryTextListener {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -51,73 +50,63 @@ public class GradesFragment extends BaseFragment implements ContentsCallback, On
     ImageView imageViewCancel;
     @BindView(R.id.search_view)
     SearchView searchView;
-    @BindView(R.id.empty)
-    RelativeLayout empty;
+    @BindView(R.id.empty_videos)
+    RelativeLayout emptyVideos;
     @BindView(R.id.message)
     TextView message;
 
+    private VideosAdapter adapter;
+    private List<Content> contents;
+    private Lesson lesson;
     private GridLayoutManager manager;
-    private ContentsPresenter presenter;
-    private GradesAdapter adapter;
-    private List<Grade> grades;
-    private List<Grade> filteredGrades;
+    private List<Content> filteredContents;
     private String searchText;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public GradesFragment() {
-    }
-
-    public static GradesFragment newInstance() {
-        GradesFragment fragment = new GradesFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_videos);
+        ButterKnife.bind(this);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_grades, container, false);
-        ButterKnife.bind(this, view);
-
-        presenter = new ContentsPresenterImp(this);
+        setupSupportedActionBar(toolbar);
 
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getCharSequence("searchText").toString();
             searchView.setQuery(searchText, true);
         } else {
             searchText = "";
+            contents = new ArrayList<>();
+            filteredContents = new ArrayList<>();
+            adapter = new VideosAdapter(filteredContents, this);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
-        grades = new ArrayList<>();
-        grades = new ArrayList<>();
-        filteredGrades = new ArrayList<>();
-        adapter = new GradesAdapter(filteredGrades, this);
-        manager = new GridLayoutManager(getContext(), 2);
+        contents = getIntent().getParcelableArrayListExtra(Constants.KEY_CONTENTS);
+        lesson = getIntent().getParcelableExtra(Constants.KEY_LESSON);
+        filteredContents = new ArrayList<>();
+        load();
+        adapter = new VideosAdapter(filteredContents, this);
+        manager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(manager);
-        CustomDividerItemDecoration dividerItemDecoration = new CustomDividerItemDecoration(getContext(), R.dimen.divider_mid);
+        CustomDividerItemDecoration dividerItemDecoration = new CustomDividerItemDecoration(this, R.dimen.divider_mid);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
-
-        presenter.getAllGrades();
 
         refreshLayout.setColorSchemeResources(R.color.refreshColor1, R.color.refreshColor2,
                 R.color.refreshColor3, R.color.refreshColor4);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getAllGrades();
+                load();
             }
         });
 
-        return view;
+        setActionBarTitle(lesson.getName());
+    }
+
+    private void load() {
+        applyFilter("");
+        refreshLayout.setRefreshing(false);
     }
 
     @OnCheckedChanged(R.id.preview_mode)
@@ -130,26 +119,9 @@ public class GradesFragment extends BaseFragment implements ContentsCallback, On
     }
 
     @Override
-    public void onShowProgress() {
-        refreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void onHideProgress() {
-        refreshLayout.setRefreshing(false);
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putCharSequence("searchText", searchText);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        searchView.setQueryHint(getString(R.string.str_search_videos));
-        searchView.setOnQueryTextListener(this);
     }
 
     @OnClick(R.id.image_cancel)
@@ -170,43 +142,20 @@ public class GradesFragment extends BaseFragment implements ContentsCallback, On
         return recyclerView;
     }
 
-    @Override
-    public void onDestroyView() {
-        if (presenter != null) {
-            presenter.onDestroy();
-        }
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onGetGradesComplete(List<Grade> grades) {
-        this.grades.clear();
-        this.grades.addAll(grades);
-        applyFilter("");
-        searchView.setQuery("", false);
-        if (!grades.isEmpty()) {
-            empty.setVisibility(View.GONE);
-        } else {
-            empty.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_empty_data);
-        }
-    }
-
-    @Override
-    public void onInteraction(Grade grade) {
-        Intent intent = new Intent(getContext(), LessonsActivity.class);
-        intent.putExtra(Constants.KEY_GRADE, grade);
+    public void onPlayContentCallback(Content content) {
+        Intent intent = new Intent(this, VideoPlayerActivity.class);
+        intent.putExtra(Constants.KEY_CONTENT, content);
         startActivity(intent);
     }
 
     private void applyFilter(String filter) {
-        this.filteredGrades.clear();
+        this.filteredContents.clear();
         if (!filter.isEmpty()) {
             showSearch(false);
             fillFilterList(filter);
         } else {
             showSearch(true);
-            this.filteredGrades.addAll(grades);
+            this.filteredContents.addAll(contents);
         }
         adapter.notifyDataSetChanged();
     }
@@ -222,20 +171,29 @@ public class GradesFragment extends BaseFragment implements ContentsCallback, On
     }
 
     private void fillFilterList(String filter) {
-        this.filteredGrades.clear();
-        for (Grade grade : grades) {
-            if (grade.getName().toLowerCase().contains(filter.toLowerCase())) {
-                filteredGrades.add(grade);
+        this.filteredContents.clear();
+        for (Content content1 : filteredContents) {
+            if (content1.getGradeName().toLowerCase().contains(filter.toLowerCase())) {
+                filteredContents.add(content1);
+                this.filteredContents.clear();
+                for (Content content : contents) {
+                    if (content.getGradeName().toLowerCase().contains(filter.toLowerCase())) {
+                        filteredContents.add(content);
+                    }
+                }
+                if (filteredContents.isEmpty()) {
+                    if (contents.isEmpty()) {
+                        emptyVideos.setVisibility(View.VISIBLE);
+                        message.setText(R.string.str_empty_videos);
+                    } else if (filteredContents.isEmpty()) {
+                    } else if (filteredContents.isEmpty()) {
+                        emptyVideos.setVisibility(View.VISIBLE);
+                        message.setText(R.string.str_not_matched_videos);
+                    } else {
+                        emptyVideos.setVisibility(View.GONE);
+                    }
+                }
             }
-        }
-        if (grades.isEmpty()) {
-            empty.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_empty_data);
-        } else if (filteredGrades.isEmpty()) {
-            empty.setVisibility(View.VISIBLE);
-            message.setText(R.string.str_not_matched_data);
-        } else {
-            empty.setVisibility(View.GONE);
         }
     }
 

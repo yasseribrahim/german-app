@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimens_6dp"
+    app:cardCornerRadius="@dimen/dimens_4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimens_10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/btn_view"
+                android:singleLine="true"
+                android:text="Header Header Header Header Header Header Header Header Header Header Header Header"
+                android:textSize="@dimen/sub_header_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dimens_6dp"
+                android:background="@drawable/rounded_more_button_selector"
+                android:inputType="textCapWords"
+                android:paddingStart="@dimen/dimens_15dp"
+                android:paddingTop="@dimen/dimens_2dp"
+                android:paddingEnd="@dimen/dimens_15dp"
+                android:paddingBottom="@dimen/dimens_2dp"
+                android:singleLine="true"
+                android:text="@string/str_show"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

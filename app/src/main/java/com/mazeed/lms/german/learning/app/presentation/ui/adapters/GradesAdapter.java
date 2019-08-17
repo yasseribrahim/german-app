@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
 import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.UIUtils;
 
 import java.util.List;
@@ -19,9 +19,9 @@ import butterknife.ButterKnife;
 
 public class GradesAdapter extends RecyclerView.Adapter<GradesAdapter.ViewHolder> {
     private final List<Grade> grades;
-    private final OnListInteractionListener<Grade> callback;
+    private final OnInteractionListener<Grade> callback;
 
-    public GradesAdapter(List<Grade> grades, OnListInteractionListener<Grade> callback) {
+    public GradesAdapter(List<Grade> grades, OnInteractionListener<Grade> callback) {
         this.grades = grades;
         this.callback = callback;
     }
@@ -43,7 +43,7 @@ public class GradesAdapter extends RecyclerView.Adapter<GradesAdapter.ViewHolder
                 if (null != callback) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an order has been selected.
-                    callback.onListInteraction(holder.grade);
+                    callback.onInteraction(holder.grade);
                 }
             }
         });

@@ -8,9 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mazeed.lms.german.learning.app.R;
-import com.mazeed.lms.german.learning.app.domain.models.contents.Grade;
 import com.mazeed.lms.german.learning.app.domain.models.contents.Lesson;
-import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnListInteractionListener;
+import com.mazeed.lms.german.learning.app.presentation.ui.communicator.OnInteractionListener;
 import com.mazeed.lms.german.learning.app.presentation.ui.utils.UIUtils;
 
 import java.util.List;
@@ -20,9 +19,9 @@ import butterknife.ButterKnife;
 
 public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.ViewHolder> {
     private final List<Lesson> lessons;
-    private final OnListInteractionListener<Lesson> callback;
+    private final OnInteractionListener<Lesson> callback;
 
-    public LessonsAdapter(List<Lesson> lessons, OnListInteractionListener<Lesson> callback) {
+    public LessonsAdapter(List<Lesson> lessons, OnInteractionListener<Lesson> callback) {
         this.lessons = lessons;
         this.callback = callback;
     }
@@ -44,7 +43,7 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.ViewHold
                 if (null != callback) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an order has been selected.
-                    callback.onListInteraction(holder.lesson);
+                    callback.onInteraction(holder.lesson);
                 }
             }
         });

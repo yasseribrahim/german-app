@@ -25,7 +25,7 @@ public class Contents extends BaseModel {
     @SerializedName("TopicsExpression")
     private List<Content> topicsExpression;
     @SerializedName("Video")
-    private List<Video> video;
+    private List<Content> video;
     @SerializedName("Word")
     private List<Content> word;
 
@@ -93,11 +93,11 @@ public class Contents extends BaseModel {
         this.topicsExpression = topicsExpression;
     }
 
-    public List<Video> getVideo() {
+    public List<Content> getVideo() {
         return video;
     }
 
-    public void setVideo(List<Video> video) {
+    public void setVideo(List<Content> video) {
         this.video = video;
     }
 

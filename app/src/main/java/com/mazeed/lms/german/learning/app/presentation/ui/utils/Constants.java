@@ -13,6 +13,8 @@ public interface Constants {
     String KEY_BOTTOM_SHEET_LIST = "BOTTOM_SHEET_LIST";
     String KEY_CONTENT = "KEY_CONTENT";
     String KEY_GRADE = "KEY_GRADE";
+    String KEY_LESSON = "KEY_LESSON";
+    String KEY_CONTENTS = "KEY_CONTENTS";
 
     int MAXIMUM_IMAGE_SIZE = 2048;// maximum size = 2 MB
 
