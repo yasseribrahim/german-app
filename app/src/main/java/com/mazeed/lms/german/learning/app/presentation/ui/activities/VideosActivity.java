@@ -102,6 +102,9 @@ public class VideosActivity extends BaseActivity implements OnPlayContentCallbac
         });
 
         setActionBarTitle(lesson.getName());
+
+        searchView.setQueryHint(getString(R.string.str_search_videos));
+        searchView.setOnQueryTextListener(this);
     }
 
     private void load() {
