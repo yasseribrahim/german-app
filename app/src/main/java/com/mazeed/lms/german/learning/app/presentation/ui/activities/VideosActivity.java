@@ -175,28 +175,19 @@ public class VideosActivity extends BaseActivity implements OnPlayContentCallbac
 
     private void fillFilterList(String filter) {
         this.filteredContents.clear();
-        for (Content content1 : filteredContents) {
-            if (content1.getGradeName().toLowerCase().contains(filter.toLowerCase())) {
-                filteredContents.add(content1);
-                this.filteredContents.clear();
-                for (Content content : contents) {
-                    if (content.getGradeName().toLowerCase().contains(filter.toLowerCase())) {
-                        filteredContents.add(content);
-                    }
-                }
-                if (filteredContents.isEmpty()) {
-                    if (contents.isEmpty()) {
-                        emptyVideos.setVisibility(View.VISIBLE);
-                        message.setText(R.string.str_empty_videos);
-                    } else if (filteredContents.isEmpty()) {
-                    } else if (filteredContents.isEmpty()) {
-                        emptyVideos.setVisibility(View.VISIBLE);
-                        message.setText(R.string.str_not_matched_videos);
-                    } else {
-                        emptyVideos.setVisibility(View.GONE);
-                    }
-                }
+        for (Content content : contents) {
+            if (content.getText().toLowerCase().contains(filter.toLowerCase())) {
+                filteredContents.add(content);
             }
+        }
+        if (contents.isEmpty()) {
+            emptyVideos.setVisibility(View.VISIBLE);
+            message.setText(R.string.str_empty_videos);
+        } else if (filteredContents.isEmpty()) {
+            emptyVideos.setVisibility(View.VISIBLE);
+            message.setText(R.string.str_not_matched_videos);
+        } else {
+            emptyVideos.setVisibility(View.GONE);
         }
     }
 
