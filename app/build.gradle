@@ -9,8 +9,8 @@ repositories {
 }
 
 //get data from properties
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("YYYY-MM-d-HHmm")
@@ -30,14 +30,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
-    signingConfigs {
-        release {
-            keyAlias properties.getProperty("keyAlias")
-            keyPassword properties.getProperty("keyPassword")
-            storeFile file(properties.getProperty("storeFile"))
-            storePassword properties.getProperty("keyPassword")
-        }
-    }
+//    signingConfigs {
+//        release {
+//            keyAlias properties.getProperty("keyAlias")
+//            keyPassword properties.getProperty("keyPassword")
+//            storeFile file(properties.getProperty("storeFile"))
+//            storePassword properties.getProperty("keyPassword")
+//        }
+//    }
 
     flavorDimensions "mode"
     productFlavors {
@@ -52,7 +52,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
         }
